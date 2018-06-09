@@ -1,9 +1,9 @@
 CREATE TABLE alocacao_medicos(
-	codigo_clinica SMALLINT(5) NOT NULL,
+	data_alocacao DATE NOT NULL,
+	horario_alocacao TIME NOT NULL,
 	codigo_medico SMALLINT(5) NOT NULL,
-	dia_semana SMALLINT(1) NOT NULL,
-	horario TIME(6) NOT NULL,
-	CHECK (dia_semana >= 1 AND dia_semana <= 7)
+	codigo_clinica SMALLINT(5) NOT NULL,
+	codigo_especialidade SMALLINT(5) NOT NULL,
 );
 
 CREATE TABLE clinicas(
@@ -20,9 +20,9 @@ CREATE TABLE consultas (
 	codigo_consulta SMALLINT(5) UNIQUE NOT NULL,
 	codigo_paciente SMALLINT(5) NOT NULL,
 	codigo_medico SMALLINT(5) NOT NULL,
-	codigo_clinica SMALLINT(5) NOT NULL,
-	data_consulta DATE NOT NULL,
-	horario_consulta TIME(6) NOT NULL,
+	data_alocacao DATE NOT NULL,
+	horario_alocacao TIME NOT NULL,
+	duracao TIME NOT NULL,
 	tipo_consulta SMALLINT(1) NOT NULL,
 	cancelada BIT NOT NULL,
 	sintomas VARCHAR(255),
@@ -36,7 +36,7 @@ CREATE TABLE convenios (
 	nome_fantasia VARCHAR(50) NOT NULL,
 	razao_social VARCHAR(255) NOT NULL,
 	cnpj CHAR(18) UNIQUE NOT NULL,
-	telefone CHAR(9),
+	telefone CHAR(12),
 	contato VARCHAR(50) NOT NULL,
 	site VARCHAR(255)
 );
@@ -47,22 +47,9 @@ CREATE TABLE empresas (
 	nome_fantasia VARCHAR(50) NOT NULL,
 	razao_social VARCHAR(255) NOT NULL,
 	cnpj CHAR(18) UNIQUE NOT NULL,
-	telefone CHAR(9),
+	telefone CHAR(12),
 	contato VARCHAR(50) NOT NULL,
 	site VARCHAR(255)
-);
-
-CREATE TABLE especialidade_clinica (
-	codigo_especialidade SMALLINT(5) NOT NULL,
-	codigo_clinica SMALLINT(5) NOT NULL,
-	dia_semana SMALLINT(1) NOT NULL,
-	horario TIME(6) NOT NULL,
-	CHECK (dia_semana >= 1 AND dia_semana <= 7)
-);
-
-CREATE TABLE especialidade_medico (
-	codigo_especialidade SMALLINT(5) NOT NULL,
-	codigo_medico SMALLINT(5) NOT NULL
 );
 
 CREATE TABLE especialidades (
@@ -83,10 +70,10 @@ CREATE TABLE medicos (
 	bairro VARCHAR(50) NOT NULL,
 	cidade VARCHAR(50) NOT NULL,
 	estado CHAR(2) NOT NULL,
-	telefone CHAR(9),
-	celular CHAR(10),
+	telefone CHAR(12),
+	celular CHAR(13),
 	email VARCHAR(255),
-	crm CHAR(13),
+	crm CHAR(13) UNIQUE NOT NULL,
 	CHECK (sexo = 'M' OR sexo = 'F' OR sexo = 'O')
 );
 
@@ -104,8 +91,8 @@ CREATE TABLE pacientes (
 	bairro VARCHAR(50) NOT NULL,
 	cidade VARCHAR(50) NOT NULL,
 	estado CHAR(2) NOT NULL,
-	telefone CHAR(9),
-	celular CHAR(10),
+	telefone CHAR(12),
+	celular CHAR(13),
 	email VARCHAR(255),
 	CHECK (sexo = 'M' OR sexo = 'F' OR sexo = 'O')
 );
